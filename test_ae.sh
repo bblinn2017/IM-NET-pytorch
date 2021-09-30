@@ -1,1 +1,0 @@
-python main.py --ae --sample_dir samples/im_ae_out --start 0 --end 9000

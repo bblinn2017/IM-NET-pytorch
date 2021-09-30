@@ -1,0 +1,11 @@
+#!/bin/bash
+
+step=5
+num_exp=1
+proxy_mode=1
+learning_rate=1e-6
+model_type=pose
+
+python modelCOND.py --step $step --num_exp $num_exp --proxy_mode $proxy_mode --learning_rate $learning_rate
+cd ..
+python test.py --step $step --num_exp $num_exp --proxy_mode $proxy_mode --ctype im --plot_name $learning_rate
