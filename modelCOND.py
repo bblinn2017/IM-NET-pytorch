@@ -277,9 +277,17 @@ class Model(nn.Module):
         v = self.transform_verts(v)
         grid_min = v.min(dim=0)[0]
         grid_max = v.max(dim=0)[0]
-        dic = {'sdf':sdf,'grid_min':grid_min,'grid_max':grid_max,'epsilon':epsilon}
 
-        return dic,v,f,betas.detach().cpu()
+        d = {
+            'sdf':sdf.detach().cpu().numpy(),
+            'grid_min':grid_min.detach().cpu().numpy(),
+            'grid_max':grid_max.detach().cpu().numpy(),
+            'vertices':v.detach().cpu().numpy(),
+            'faces':f.detach().cpu().numpy()
+            'betas':betas.detach().cpu().numpy()
+        }
+        
+        return d
 
 def train(model):
 
@@ -301,7 +309,7 @@ def test(model,name,cond=True):
     num_exp = 100
     for i in tqdm.tqdm(range(num_exp)):
         item = model.export(cond)
-        torch.save(item,f'model_output_cond/{name}/{i}.pt')
+        write_gzip(item,f'model_output_cond/{name}/{i}.gz')
         idx += 1
 
 def test_all():

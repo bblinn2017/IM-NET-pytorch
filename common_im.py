@@ -4,10 +4,22 @@ import shutil
 import zipfile
 import open3d as o3d
 import torch
+import gzip
 
 device = torch.device('cuda')
 
 b_mean,b_std = torch.load('betas_params.pt')
+
+def write_gzip(data,filename):
+    f = gzip.GzipFile(filename,'w')
+    np.save(file=f,arr=data)
+    f.close()
+
+def read_gzip(filename):
+    f = gzip.GzipFile(filename,'r')
+    data = np.load(file=f)
+    f.close()
+    return data
 
 def sample_betas(batch_size=1,is_default=False):
     if is_default:
